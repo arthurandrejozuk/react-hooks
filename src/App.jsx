@@ -4,6 +4,7 @@ import Cabecalho from "./components/Cabecalho";
 import Cronometro from "./components/Cronometro";
 import AppTarefas from "./components/AppTarefas";
 import Rodape from "./components/Rodape";
+import Form from "./components/Form";
 
 function App() {
   const modoCronometro = {
@@ -19,6 +20,7 @@ function App() {
       <main>
         <Cronometro />
         <AppTarefas />
+        <Form />
       </main>
       <Rodape />
     </div>
