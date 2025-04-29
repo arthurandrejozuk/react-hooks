@@ -7,6 +7,7 @@ import Rodape from "./components/Rodape";
 import Form from "./components/Form";
 import Timer from "./components/Cronometro/Timer";
 import { useState } from "react";
+import Player from "./components/Player";
 
 function App() {
   const modoCronometro = {
@@ -28,6 +29,7 @@ function App() {
         />
         <AppTarefas />
         <Timer iniciar={iniciarTimer} />
+        <Player />
         <Form />
       </main>
       <Rodape />
