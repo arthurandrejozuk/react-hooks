@@ -1,10 +1,12 @@
 import styles from "./App.module.css";
 
 import Cabecalho from "./components/Cabecalho";
-import Cronometro from "./components/Cronometro";
+import BotaoCronometro from "./components/Cronometro";
 import AppTarefas from "./components/AppTarefas";
 import Rodape from "./components/Rodape";
 import Form from "./components/Form";
+import Timer from "./components/Cronometro/Timer";
+import { useState } from "react";
 
 function App() {
   const modoCronometro = {
@@ -14,12 +16,18 @@ function App() {
     tempoInicialEmSegundos: 30,
   };
 
+  const [iniciarTimer, setIniciarTimer] = useState(false);
+
   return (
     <div className={styles[`app--${modoCronometro.id}`]}>
       <Cabecalho />
       <main>
-        <Cronometro />
+        <BotaoCronometro
+          tipo={iniciarTimer ? "Pausar" : "Começar"}
+          iniciaCronometro={() => setIniciarTimer((prev) => !prev)}
+        />
         <AppTarefas />
+        <Timer iniciar={iniciarTimer} />
         <Form />
       </main>
       <Rodape />
