@@ -6,8 +6,10 @@ import AppTarefas from "./components/AppTarefas";
 import Rodape from "./components/Rodape";
 import Form from "./components/Form";
 import Timer from "./components/Cronometro/Timer";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Player from "./components/Player";
+import TarefaProvider from "./components/Contexts/TarefasContext";
+import CronometroProvider from "./components/Contexts/CronometroContext";
 
 function App() {
   const modoCronometro = {
@@ -18,6 +20,15 @@ function App() {
   };
 
   const [iniciarTimer, setIniciarTimer] = useState(false);
+  const refPai = useRef(null);
+
+  function alternarMusica() {
+    if (refPai.current.paused()) {
+      refPai.current.play();
+    } else {
+      refPai.current.pause();
+    }
+  }
 
   return (
     <div className={styles[`app--${modoCronometro.id}`]}>
@@ -28,9 +39,14 @@ function App() {
           iniciaCronometro={() => setIniciarTimer((prev) => !prev)}
         />
         <AppTarefas />
-        <Timer iniciar={iniciarTimer} />
-        <Player />
-        <Form />
+        <CronometroProvider>
+          <Timer iniciar={iniciarTimer} />
+        </CronometroProvider>
+        <Player ref={refPai} />
+        <button onClick={alternarMusica}>Tocar</button>
+        <TarefaProvider>
+          <Form />
+        </TarefaProvider>
       </main>
       <Rodape />
     </div>

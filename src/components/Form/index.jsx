@@ -1,47 +1,39 @@
-import { useState } from "react";
+import { useContext } from "react";
 import styles from "./styles.module.css";
+import { TarefaContext } from "../Contexts/TarefasContext";
 
 export default function Form() {
-  const [form, setForm] = useState({ nome: "", email: "" });
-  const [lista, setLista] = useState([]);
+  const { tarefaObj, setTarefa, criaTarefa, lista } = useContext(TarefaContext);
 
   function handleChange(field, value) {
-    setForm((prev) => ({ ...prev, [field]: value }));
-  }
-  function onClick() {
-    setLista((prev) => [...(prev ?? []), form]);
-    console.log(lista);
-    setForm({
-      nome: "",
-      email: "",
-    });
+    setTarefa((prev) => ({ ...prev, [field]: value }));
   }
 
   return (
     <form className={styles.form}>
       <div className={styles.input_config}>
-        <label htmlFor="">Digite seu nome:</label>
+        <label htmlFor="">Digite seu tarefa:</label>
         <input
-          placeholder="Nome"
+          placeholder="ex: Ler"
           type="text"
-          value={form.nome}
-          onChange={(event) => handleChange("nome", event.target.value)}
+          value={tarefaObj.tarefa}
+          onChange={(event) => handleChange("tarefa", event.target.value)}
         />
       </div>
       <div className={styles.input_config}>
-        <label htmlFor="">Digite seu email:</label>
+        <label htmlFor="">Digite seu descricao:</label>
         <input
-          placeholder="Email"
+          placeholder="ex: Leitura de 1h"
           type="text"
-          value={form.email}
-          onChange={(event) => handleChange("email", event.target.value)}
+          value={tarefaObj.descricao}
+          onChange={(event) => handleChange("descricao", event.target.value)}
         />
       </div>
       <button
         className={styles.button}
         onClick={(event) => {
           event.preventDefault();
-          onClick();
+          criaTarefa();
         }}
       >
         Enviar
@@ -50,8 +42,8 @@ export default function Form() {
         Lista
         {lista.map((item, index) => (
           <ul key={index}>
-            <li>{item.nome}</li>
-            <li>{item.email}</li>
+            <li>{item.tarefa}</li>
+            <li>{item.descricao}</li>
           </ul>
         ))}
       </div>

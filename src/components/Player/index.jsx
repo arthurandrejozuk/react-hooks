@@ -1,6 +1,8 @@
-import { useEffect, useRef } from "react";
-import musica from "../../../public/sons/luna-rise-part-one.mp3";
-export default function Player() {
+import { useEffect, useRef, useImperativeHandle, forwardRef } from "react";
+import musica from "../../../public/sons/luna-rise-part-one.mp3"; // substitua pelo caminho real do seu arquivo
+
+// eslint-disable-next-line react/display-name
+const Player = forwardRef((props, ref) => {
   const musicaRef = useRef(null);
 
   useEffect(() => {
@@ -11,17 +13,13 @@ export default function Player() {
     };
   }, []);
 
-  function alternarMusica() {
-    if (musicaRef.current.paused) {
-      musicaRef.current.play();
-    } else {
-      musicaRef.current.pause();
-    }
-  }
+  useImperativeHandle(ref, () => ({
+    play: () => musicaRef.current?.play(),
+    pause: () => musicaRef.current?.pause(),
+    paused: () => musicaRef.current?.paused,
+  }));
 
-  return (
-    <div>
-      <button onClick={alternarMusica}>Tocar som</button>
-    </div>
-  );
-}
+  return null;
+});
+
+export default Player;
