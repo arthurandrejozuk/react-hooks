@@ -14,8 +14,19 @@ export default function TarefaProvider({ children }) {
     });
   }
 
+  function tarefasReducer(state, action) {
+    switch (action.type) {
+      case "adicionar":
+        return [...state, action.tarefa];
+      case "limpar":
+        return [];
+      default:
+        return state;
+    }
+  }
+
   return (
-    <TarefaContext.Provider value={{ tarefaObj, setTarefa, criaTarefa, lista }}>
+    <TarefaContext.Provider value={{ tarefaObj, lista, setTarefa, criaTarefa, tarefasReducer }}>
       {children}
     </TarefaContext.Provider>
   );

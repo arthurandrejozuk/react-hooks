@@ -1,13 +1,12 @@
-import { useContext } from "react";
+import { useContext, useReducer } from "react";
 import styles from "./styles.module.css";
+import useTarefa from "../hooks/useTarefa";
 import { TarefaContext } from "../Contexts/TarefasContext";
 
 export default function Form() {
-  const { tarefaObj, setTarefa, criaTarefa, lista } = useContext(TarefaContext);
-
-  function handleChange(field, value) {
-    setTarefa((prev) => ({ ...prev, [field]: value }));
-  }
+  const { lista, tarefasReducer } = useContext(TarefaContext);
+  const { tarefa, handleChange, clearTarefa } = useTarefa({ tarefa: "", descricao: "" });
+  const [listaRedux, dispatch] = useReducer(tarefasReducer, lista);
 
   return (
     <form className={styles.form}>
@@ -16,31 +15,42 @@ export default function Form() {
         <input
           placeholder="ex: Ler"
           type="text"
-          value={tarefaObj.tarefa}
-          onChange={(event) => handleChange("tarefa", event.target.value)}
+          name="tarefa"
+          value={tarefa.tarefa}
+          onChange={handleChange}
         />
       </div>
       <div className={styles.input_config}>
         <label htmlFor="">Digite seu descricao:</label>
         <input
+          name="descricao"
           placeholder="ex: Leitura de 1h"
           type="text"
-          value={tarefaObj.descricao}
-          onChange={(event) => handleChange("descricao", event.target.value)}
+          value={tarefa.descricao}
+          onChange={handleChange}
         />
       </div>
       <button
         className={styles.button}
         onClick={(event) => {
           event.preventDefault();
-          criaTarefa();
+          dispatch({ type: "adicionar", tarefa: tarefa });
         }}
       >
         Enviar
       </button>
+      <button
+        onClick={(event) => {
+          event.preventDefault();
+          dispatch({ type: "limpar" });
+          clearTarefa();
+        }}
+      >
+        Limpar
+      </button>
       <div className={styles.lista}>
         Lista
-        {lista.map((item, index) => (
+        {listaRedux.map((item, index) => (
           <ul key={index}>
             <li>{item.tarefa}</li>
             <li>{item.descricao}</li>
